@@ -1,4 +1,4 @@
-var url = "./../../samples.json";
+var url = "../../samples.json";
 var ids = [];
 var samples=[];
 var metadata=[];
@@ -197,4 +197,4 @@ function optionChanged(){
 
     //update gauge
 
-}
+};
