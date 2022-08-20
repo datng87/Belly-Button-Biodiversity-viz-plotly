@@ -2,7 +2,10 @@ var url = "./../../data/samples.json";
 var ids = [];
 var samples=[];
 var metadata=[];
-
+//length of neddle
+const neddleLength = 0.35;
+//base size of neddle
+const basesize = 0.02;
 //read json and draw default value
 d3.json(url).then(function(jsonData){
     ids = jsonData.names;
@@ -70,7 +73,7 @@ d3.json(url).then(function(jsonData){
     };
     var data =[trace1];
     var layout = {
-        title:"Top 10 OTU Ids"
+        title:"<b>Top 10 OTU Ids</b>"
     };
     Plotly.newPlot("bar",data,layout);
     //update info
@@ -104,14 +107,85 @@ d3.json(url).then(function(jsonData){
     };
     data =[trace2];
     layout = {
-        title:"OTU bubble chart",
+        title:"<b>OTU bubble chart</b>",
         xaxis : { 
             title: {text:"OTU ID"}
         },
         showlegend: false
     };
     Plotly.newPlot("bubble",data,layout);
-
+    
+    //plot gauge
+    var data = [{
+        values: [1, 1, 1, 1, 1, 1, 1, 1, 1,9],
+        text: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9"],
+        name: 'UOI',
+        hoverinfo: 'none',
+        hole: .7,
+        type: 'pie',
+        textposition: "inside",
+        textfont: {
+            color: 'black',
+        },
+        insidetextorientation:"horizontal",
+        marker: {
+            colors: ["#e1d1ec","#cac2ec","#bab3ec","#9e9dec","#8f8eec","#7d7dec","#6e70ec","#5c5cec","#4f4fec","white"] 
+          },
+        rotation: 90,
+        textinfo: 'text',
+        direction: 'clockwise'
+      }];
+    //needle paremeter
+    // convert degrees to radians function
+    radians = (theta) => theta * Math.PI / 180;
+    //calculate angle of neddle in radian
+	var theta = metapoint.wfreq * 180 / 9 ;
+    //convert angle to rad
+	var rads = radians(theta);
+    //calculate needle position end point
+	var x1 = -1 * neddleLength * Math.cos(rads) + 0.5;
+	let y1 = neddleLength * Math.sin(rads) + 0.5;
+    //calculate base positions
+    var p0 = [-1 * basesize * Math.cos(radians(theta-90)) + 0.5, basesize * Math.sin(radians(theta-90)) + 0.5];
+    var p1 = [-1 * basesize * Math.cos(radians(theta+90)) + 0.5, basesize * Math.sin(radians(theta+90)) + 0.5];
+    var layout = {
+        title: '<b> Belly Button Washing Frequency </b> <br> Scrubs per week',
+        shapes: [
+            //triangle needle
+            {
+                type: 'path',
+                path: `M ${x1} ${y1} L ${p0[0]} ${p0[1]} L ${p1[0]} ${p1[1]} Z`,
+                fillcolor: 'red',
+                line: {
+                    width: 0
+                }
+            },
+            //circle of needle
+            {
+                type: 'circle',
+                // x-reference is assigned to the x-values
+                xref: 'paper',
+                // y-reference is assigned to the plot paper [0,1]
+                yref: 'paper',
+                x0: 0.5-basesize ,
+                y0: 0.5-basesize ,
+                x1: 0.5+basesize,
+                y1: 0.5+basesize,
+                fillcolor: 'red',
+                line: {
+                    width: 0
+                },
+            }
+        ],
+        showlegend: false,
+        margin: {
+            l: 40,
+            r: 40,
+            b: 0,
+            t: 100,
+          }
+    };
+      Plotly.newPlot('gauge', data, layout);
 });
 
 d3.selectAll("#selDataset").on("change", optionChanged);
@@ -186,7 +260,7 @@ function optionChanged(){
     };
     data =[trace2];
     layout = {
-        title:"OTU bubble chart",
+        title:"<b>OTU bubble chart</b>",
         xaxis : { 
             title: {text:"OTU ID"}
         },
@@ -196,5 +270,74 @@ function optionChanged(){
    
 
     //update gauge
-
+    var data = [{
+        values: [1, 1, 1, 1, 1, 1, 1, 1, 1,9],
+        text: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9"],
+        name: 'UOI',
+        hoverinfo: 'none',
+        hole: .7,
+        type: 'pie',
+        textposition: "inside",
+        textfont: {
+            color: 'black',
+        },
+        insidetextorientation:"horizontal",
+        marker: {
+            colors: ["#e1d1ec","#cac2ec","#bab3ec","#9e9dec","#8f8eec","#7d7dec","#6e70ec","#5c5cec","#4f4fec","white"] 
+          },
+        rotation: 90,
+        textinfo: 'text',
+        direction: 'clockwise'
+      }];
+    //needle paremeter
+    // convert degrees to radians function
+    radians = (theta) => theta * Math.PI / 180;
+    //calculate angle of neddle in radian
+	var theta = metapoint.wfreq * 180 / 9 ;
+    //convert angle to rad
+	var rads = radians(theta);
+    //calculate needle position end point
+	var x1 = -1 * neddleLength * Math.cos(rads) + 0.5;
+	let y1 = neddleLength * Math.sin(rads) + 0.5;
+    //calculate base positions
+    var p0 = [-1 * basesize * Math.cos(radians(theta-90)) + 0.5, basesize * Math.sin(radians(theta-90)) + 0.5];
+    var p1 = [-1 * basesize * Math.cos(radians(theta+90)) + 0.5, basesize * Math.sin(radians(theta+90)) + 0.5];
+    var layout = {
+        title: '<b> Belly Button Washing Frequency </b> <br> Scrubs per week',
+        shapes: [
+            //triangle needle
+            {
+                type: 'path',
+                path: `M ${x1} ${y1} L ${p0[0]} ${p0[1]} L ${p1[0]} ${p1[1]} Z`,
+                fillcolor: 'red',
+                line: {
+                    width: 0
+                }
+            },
+            //circle of needle
+            {
+                type: 'circle',
+                // x-reference is assigned to the x-values
+                xref: 'paper',
+                // y-reference is assigned to the plot paper [0,1]
+                yref: 'paper',
+                x0: 0.5-basesize ,
+                y0: 0.5-basesize ,
+                x1: 0.5+basesize,
+                y1: 0.5+basesize,
+                fillcolor: 'red',
+                line: {
+                    width: 0
+                },
+            }
+        ],
+        showlegend: false,
+        margin: {
+            l: 40,
+            r: 40,
+            b: 0,
+            t: 100,
+          }
+    };
+    Plotly.react('gauge', data, layout);
 };
