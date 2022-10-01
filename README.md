@@ -4,4 +4,4 @@ The dashboard shows the background of each individual and what type of bacteria 
 
 ![alt text](/images/plotly.gif)
 
-Visit https://datng87.github.io/plotly-challenge/ for a live demo website. 
+Visit https://datng87.github.io/Belly-Button-Biodiversity-viz-plotly/ for a live demo website. 
